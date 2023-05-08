@@ -1,7 +1,7 @@
 <?php
-    require_once("db.php");
+    require_once("../db.php");
 
-    $stmt = $conn->prepare("SELECT * FROM card");
+    $stmt = $conn->prepare("SELECT * FROM checks");
     $stmt->execute();
     $result = $stmt->get_result();
 

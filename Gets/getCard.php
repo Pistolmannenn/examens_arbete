@@ -1,7 +1,8 @@
 <?php
-    require_once("db.php");
+    require_once("../db.php");
+    require_once("../json_exempel.php");
 
-    $stmt = $conn->prepare("SELECT * FROM offer");
+    $stmt = $conn->prepare("SELECT * FROM card");
     $stmt->execute();
     $result = $stmt->get_result();
 

@@ -7,8 +7,10 @@
 
     if ($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
-            print_r($row);
+            $checks[] = $row;
         }
+        $data = ["Result"=>$checks];
+        jsonWrite($version, $data);
     }
 
 

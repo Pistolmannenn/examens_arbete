@@ -15,11 +15,20 @@
 
         $row = $result->fetch_assoc();
 
-        print_r($row["DebtAmount"]);
-        die();
+        $newDebtAmount = $row["DebtAmount"] - $_GET["Payment"];
+
+        if ($newDebtAmount < 0){
+            $stmt = $conn->prepare("DELETE FROM debt WHERE DebtID = ? ");
+            $stmt->bind_param("i", $_GET["DebtID"]);
+            $stmt->execute();
+
+            $data = "Debt paid";
+            jsonWrite($version, $data);
+        }
+
 
         $stmt = $conn->prepare("UPDATE debt SET DebtAmount = ? WHERE DebtID = ? ");
-        $stmt->bind_param("ii", $_GET["DebtAmount"], $_GET["DebtID"]);
+        $stmt->bind_param("ii", $newDebtAmount, $_GET["DebtID"]);
         $stmt->execute();
 
         $data = "Uppdated debt";

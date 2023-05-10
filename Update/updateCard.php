@@ -2,12 +2,15 @@
     require_once("../db.php");
     require_once("../json_exempel.php");
 
-    if(empty($_GET["CardID"])||empty($_GET["CardAmount"])){
-        errorWrite($version, "Must have CardID and CardAmount");
+    if(empty($_GET["CardID"])||empty($_GET["CardAmount"])||empty($_GET["PersonID"])){
+        errorWrite($version, "Must have CardID, CardAmount and PersonID");
     }
+    $cardID = $_GET["CardID"];
+    $cardAmount = $_GET["CardAmount"];
+    $personID = $_GET["PersonID"];
  
     $stmt = $conn->prepare("SELECT CardAmount FROM card WHERE CardID = ?");
-    $stmt->bind_param("i", $_GET["CardID"]);
+    $stmt->bind_param("i", $cardID);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -15,12 +18,14 @@
 
         $row = $result->fetch_assoc();
 
-        $newCardAmount = $row["CardAmount"] + $_GET["CardAmount"];
+        $newCardAmount = $row["CardAmount"] + $cardAmount;
 
         if ($newCardAmount >= 10){
             $stmt = $conn->prepare("UPDATE card SET CardAmount = 0 WHERE CardID = ?");
-            $stmt->bind_param("i", $_GET["CardID"]);
+            $stmt->bind_param("i", $cardID);
             $stmt->execute();
+
+            
 
             $data = "Card done";
             jsonWrite($version, $data);
@@ -28,7 +33,7 @@
 
 
         $stmt = $conn->prepare("UPDATE card SET CardAmount = ? WHERE CardID = ?");
-        $stmt->bind_param("ii", $newCardAmount, $_GET["CardID"]);
+        $stmt->bind_param("ii", $newCardAmount, $cardID);
         $stmt->execute();
 
         $data = "Uppdated card";

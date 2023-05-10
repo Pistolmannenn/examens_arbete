@@ -18,27 +18,34 @@
 
         $row = $result->fetch_assoc();
 
+        $savePayment = $payment;
+        require("../saveHistory.php");
+        $savePayment = null;
+
         $newDebtAmount = $row["DebtAmount"] - $payment;
 
-        if ($newDebtAmount < 0){
+        if ($newDebtAmount <= 0){
             $stmt = $conn->prepare("DELETE FROM debt WHERE DebtID = ? ");
             $stmt->bind_param("i", $debtID);
             $stmt->execute();
             
-            require_once("../saveHistory.php");
+            require("../saveHistory.php");
 
             $data = "Debt paid";
-            jsonWrite($version, $data);
+        }
+        else{
+            $stmt = $conn->prepare("UPDATE debt SET DebtAmount = ? WHERE DebtID = ? ");
+            $stmt->bind_param("ii", $newDebtAmount, $debtID);
+            $stmt->execute();
+
+            $data = "Uppdated debt";
         }
 
-
-        $stmt = $conn->prepare("UPDATE debt SET DebtAmount = ? WHERE DebtID = ? ");
-        $stmt->bind_param("ii", $newDebtAmount, $debtID);
-        $stmt->execute();
-
-        $data = "Uppdated debt";
         jsonWrite($version, $data);
     }
+    else(
+        errorWrite($version, "Check not found")
+    )
  
 
 ?>

@@ -18,6 +18,10 @@
 
         $row = $result->fetch_assoc();
 
+        $saveCardAmount = $cardAmount;
+        require("../saveHistory.php");
+        $saveCardAmount = null;
+
         $newCardAmount = $row["CardAmount"] + $cardAmount;
 
         if ($newCardAmount >= 10){
@@ -25,20 +29,22 @@
             $stmt->bind_param("i", $cardID);
             $stmt->execute();
 
-            
+            require("../saveHistory.php");
 
             $data = "Card done";
-            jsonWrite($version, $data);
+        }
+        else{
+            $stmt = $conn->prepare("UPDATE card SET CardAmount = ? WHERE CardID = ?");
+            $stmt->bind_param("ii", $newCardAmount, $cardID);
+            $stmt->execute();
+
+            $data = "Uppdated card";
         }
 
-
-        $stmt = $conn->prepare("UPDATE card SET CardAmount = ? WHERE CardID = ?");
-        $stmt->bind_param("ii", $newCardAmount, $cardID);
-        $stmt->execute();
-
-        $data = "Uppdated card";
         jsonWrite($version, $data);
     }
-
+    else(
+        errorWrite($version, "Card not found")
+    )
 
 ?>

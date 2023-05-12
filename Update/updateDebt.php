@@ -2,12 +2,12 @@
     require_once("../db.php");
     require_once("../json_exempel.php");
 
-    if(empty($_GET["DebtID"])||empty($_GET["Payment"])||empty($_GET["PersonID"])){
-        errorWrite($version, "Must have DebtID, Payment and PersonID");
+    if(empty($_GET["DebtID"])||empty($_GET["Payment"])||empty($_GET["PayerID"])){
+        errorWrite($version, "Must have DebtID, Payment and PayerID");
     }
     $debtID = $_GET["DebtID"];
     $payment = $_GET["Payment"];
-    $personID1 = $_GET["PersonID"];
+    $personID1 = $_GET["PayerID"];
 
     $stmt = $conn->prepare("SELECT DebtAmount FROM debt WHERE DebtID = ? ");
     $stmt->bind_param("i", $debtID);
@@ -18,9 +18,9 @@
 
         $row = $result->fetch_assoc();
 
-        $savePayment = $payment;
+        $amount = $payment;
         require("../saveHistory.php");
-        $savePayment = null;
+        $amount = null;
 
         $newDebtAmount = $row["DebtAmount"] - $payment;
 

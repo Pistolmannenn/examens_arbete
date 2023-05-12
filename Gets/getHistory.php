@@ -9,16 +9,16 @@
     if ($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
             if(!empty($row["CardID"])){
-                if(!empty($row["CardAmount"])){
-                    $row = ["Datatype" => "Card add", "OwnerID" => $row["PersonID1"], "CardID"=> $row["CardID"], "CardAmount"=> $row["CardAmount"], "ActiveTime"=> $row["ActiveTime"]];
+                if(!empty($row["Amount"])){
+                    $row = ["Datatype" => "Card add", "OwnerID" => $row["PersonID1"], "CardID"=> $row["CardID"], "CardAmount"=> $row["Amount"], "ActiveTime"=> $row["ActiveTime"]];
                 }
                 else{
                     $row = ["Datatype" => "Card done", "OwnerID" => $row["PersonID1"], "CardID"=> $row["CardID"], "ActiveTime"=> $row["ActiveTime"]];
                 }
             }
             elseif(!empty($row["DebtID"])){
-                if(!empty($row["Payment"])){
-                    $row = ["Datatype" => "Payment", "PayerID" => $row["PersonID1"], "DebtID"=> $row["DebtID"], "Payment"=> $row["Payment"], "PaymentTime"=> $row["ActiveTime"]];
+                if(!empty($row["Amount"])){
+                    $row = ["Datatype" => "Payment", "PayerID" => $row["PersonID1"], "DebtID"=> $row["DebtID"], "Payment"=> $row["Amount"], "PaymentTime"=> $row["ActiveTime"]];
                 }
                 else{
                     $row = ["Datatype" => "Debt paid", "PayerID" => $row["PersonID1"], "DebtID"=> $row["DebtID"], "PaymentTime"=> $row["ActiveTime"]];

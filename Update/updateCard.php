@@ -2,12 +2,12 @@
     require_once("../db.php");
     require_once("../json_exempel.php");
 
-    if(empty($_GET["CardID"])||empty($_GET["CardAmount"])||empty($_GET["PersonID"])){
-        errorWrite($version, "Must have CardID, CardAmount and PersonID");
+    if(empty($_GET["CardID"])||empty($_GET["CardAmount"])||empty($_GET["OwnerID"])){
+        errorWrite($version, "Must have CardID, CardAmount and OwnerID");
     }
     $cardID = $_GET["CardID"];
     $cardAmount = $_GET["CardAmount"];
-    $personID1 = $_GET["PersonID"];
+    $personID1 = $_GET["OwnerID"];
  
     $stmt = $conn->prepare("SELECT CardAmount FROM card WHERE CardID = ?");
     $stmt->bind_param("i", $cardID);
@@ -18,9 +18,9 @@
 
         $row = $result->fetch_assoc();
 
-        $saveCardAmount = $cardAmount;
+        $amount = $cardAmount;
         require("../saveHistory.php");
-        $saveCardAmount = null;
+        $amount = null;
 
         $newCardAmount = $row["CardAmount"] + $cardAmount;
 

@@ -7,7 +7,7 @@
     }
     $cardID = $_GET["CardID"];
     $cardAmount = $_GET["CardAmount"];
-    $personID = $_GET["PersonID"];
+    $personID1 = $_GET["PersonID"];
  
     $stmt = $conn->prepare("SELECT CardAmount FROM card WHERE CardID = ?");
     $stmt->bind_param("i", $cardID);

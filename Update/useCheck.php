@@ -6,7 +6,7 @@
         errorWrite($version, "Must have CheckID and PersonID");
     }
     $checkID = $_GET["CheckID"];
-    $personID = $_GET["PersonID"];
+    $personID1 = $_GET["PersonID"];
  
     $stmt = $conn->prepare("SELECT * FROM checks WHERE CheckID = ?");
     $stmt->bind_param("i", $checkID);

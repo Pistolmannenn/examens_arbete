@@ -7,7 +7,7 @@
     }
     $debtID = $_GET["DebtID"];
     $payment = $_GET["Payment"];
-    $personID = $_GET["PersonID"];
+    $personID1 = $_GET["PersonID"];
 
     $stmt = $conn->prepare("SELECT DebtAmount FROM debt WHERE DebtID = ? ");
     $stmt->bind_param("i", $debtID);

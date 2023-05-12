@@ -4,8 +4,8 @@
 
     $date = date('Y-m-d H-i-s');
 
-    $stmt = $conn->prepare("INSERT INTO history(PersonID, CardID, CardAmount, DebtID, Payment, CheckID, HouseID, ActiveTime) VALUE (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sisisiis", $personID, $cardID, $saveCardAmount, $debtID, $savePayment, $checkID, $houseID, $date);
+    $stmt = $conn->prepare("INSERT INTO history(PersonID1, PersonID2, CardID, CardAmount, DebtID, Payment, CheckID, HouseID, HouseName, ActiveTime) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("iiiiiiiss", $personID1, $personID2, $cardID, $saveCardAmount, $debtID, $savePayment, $checkID, $houseID, $houseName, $date);
     $stmt->execute();
 
 ?>
